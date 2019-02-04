@@ -1,4 +1,3 @@
-#Methods are in order of execution
 
 class Game:
     players = []
@@ -106,38 +105,6 @@ class Game:
             current.passTurn()
             return 'You passed turn!'
         else:
-            print 'Please write a good option'
-            return playerTurn()
-
-    def npcTurn(self): #Turn for npcs recursion method
-        current = self.players[Game.turn] #Current will be the current player
-        if current.score < 16:
-            current.throwCard()
-            return npcTurn()
-        elif 17 < current.score < 21:
-            print 'Statistic goes here'
-            self.runStatistics()
-        elif current.score > 21:
-            print 'Player' + Game.turn + 'got busted'
-            current.passTurn()
-        elif current.score == 21:
-            current.wins += 1
-            print 'Player' + Game.turn + 'wins with a blackjack'
-            self.passRound()
-        else:
-            return npcTurn()
-        
-    def passRound(self):
-        print "Round ended, turn of the house again."
-        for player in self.players:
-            player.score = 0
-        self.turn = 0
-
-    def end(self):
-        wins = []
-        for number in range(len(self.players)):
-            current = self.players[x]
-            wins.append(current.wins)
     
         maxScore = max(wins)
         maxIndex = wins.index(maxScore)
@@ -172,6 +139,65 @@ class Player:
     def passTurn(self):
         Game.turn += 1
 
+    startGame() #Starts game in single player
+#Stop Function here
+
+
+def startGame():
+    if currentPlayer != userName:
+        npcTurn()
+    else:
+        playerTurn()
+        
+            
+def npcTurn():
+    index = playerNames.index(currentPlayer)
+
+    card = drawCard() #We get a card
+    print currentPlayer + 'got a ' + card #Show the card
+    scores[index] += card #Assign it to the right player (the current one)
+
+    if scores[index] == 21: #We pass round if its 21
+        print currentPlayer + 'wins with a blackJack!'
+        isWin()
+        passRound()
+    elif scores[index] > 21: #We pass turn if its more than 21 and its busted
+        print currentPlayer + 'got busted!'
+        passTurn()
+    elif scores[index] <= 16: #We draw again if its less than 16
+        return drawCard()
+    else: #We pass turn if its more than 16 (17 or more)
+        passTurn()
+
+def drawCard(): #Draw card
+
+    card = deck[math.floor(math.radint(1,len(deck)))] #Random card
+    if card == 'J':
+        card = 1;
+    elif card == 'Q':
+        card = 2;
+    elif card == 'K':
+        card = 3;
+    else:
+        card = card;
+
+    return int(card); #Return value of the card, in integer 
+
+def passTurn(): #Pass the turn to the next player
+    if currentPlayer == playerNames[len(playerNames)]: #If last player, we check who wins and passRound
+       checkWin() #We check who wins
+       passRound()
+    else:   
+        currentPlayer = playerNames[playerNames.index(currentPlayer) + 1] #Next player if its not the last 1
+
+def passRound(): #We pass round, reset scores, THIS DOES NOT CHECK WHO WINS
+    for number in range(1, len(scores)):
+        scores[number] = 0
+
+    currentPlayer = playerNames[0]
+
+def isWin(): #Method to give a win directly to a player
+    wins[wins.index(currentPlayer)] += 1
     
 class RealPlayer(Player):
     name = Game.userName     
