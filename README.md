@@ -1,4 +1,4 @@
-This is a blackjack made with python.
+This is a blackjack made with python. Made 4 days after learning python. 
 
 DOCS:
   - This file runs with python3 or more (3.5.0/3.7.2/3.7.0 etc)
